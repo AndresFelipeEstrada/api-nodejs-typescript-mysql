@@ -22,15 +22,15 @@ export type userType = {
     id: number,
     nombre: string,
     profesion: string,
-    telefono: number,
+    telefono: string,
     correo:string,
     password:string
     descripcion:string,
     imagen:string,
-    creado?:Date,
-    editado?:Date,
+    creado:Date,
+    editado:Date,
     categoria: Categoria,
-    reviews?: reviewsType[]
+    reviews: reviewsType[]
 }
 
 export type createUserType = Omit<userType, 'id'| 'creado'| 'editado'| 'reviews'>
