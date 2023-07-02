@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getItem, createdItem, getOneItem } from '../services/user.service'
+import { getItem, createdItem, getOneItem, updateItem } from '../services/user.service'
 import { Categoria } from '../types'
 
 export const getUsers = async (req:Request, res:Response) => {
@@ -45,5 +45,13 @@ export const createUser = async (req:Request, res:Response) => {
     return console.log('error al crear usuario', error.message)
   }
 }
-export const updateUser = (req:Request, res:Response) => {}
+export const updateUser = async (req:Request, res:Response) => {
+  try {
+    const { id } = req.params
+
+    await updateItem(Number(id), req.body)
+  } catch (error) {
+    console.log('error al actualizar usuarios', error.message)
+  }
+}
 export const deleteUser = (req:Request, res:Response) => {}

@@ -10,21 +10,23 @@ export const getItem = async () => {
 export const getOneItem = async (id:number) => {
   const userFound = User.findOneBy({ id })
 
-  if (!userFound) return 'USER NOT FOUND'
+  if (!userFound) throw new Error('Error al encontrar usuario')
 
   return userFound
 }
 
 export const createdItem = async (newUser:DeepPartial<User>) => {
-  const data = User.create(newUser)
-  data.save()
-  return data
+  // const data = User.create(newUser)
+  // console.log(data)
+
+  // // data.save()
+  // return data
 }
 
-export const updateItem = async (id:number, user:any) => {
+export const updateItem = async (id:number, user:User) => {
   const getUser = await User.findOneBy({ id })
 
-  if (!getUser) return 'USER NOT UPDATED'
+  if (!getUser) throw new Error('Error al encontrar usuario')
 
   const updateUser = {
     ...getUser,

@@ -26,7 +26,7 @@ export class User extends BaseEntity {
   @Column()
     descripcion: string
 
-  @Column()
+  @Column({ length: 9999 })
     imagen: string
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })

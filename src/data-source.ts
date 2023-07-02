@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { User } from './entity/User'
@@ -6,10 +7,10 @@ import { Reviews } from './entity/Reviews'
 export const AppDataSource = new DataSource({
   type: 'mysql',
   host: process.env.DATABASE_HOST,
-  port: 3306,
-  username: 'andres',
-  password: '12345',
-  database: 'contratame_db',
+  port: Number(process.env.DATABASE_PORT),
+  username: process.env.DATABASE_USERNAME,
+  password: '',
+  database: process.env.DATABASE_NAME,
   synchronize: true,
   logging: false,
   entities: [User, Reviews],
