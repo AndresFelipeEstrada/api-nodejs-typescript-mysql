@@ -1,26 +1,36 @@
 import { DeepPartial } from 'typeorm'
 import { User } from '../entity/User'
 
-export const getItem = async () => {
-  const user = await User.find({})
+export const getItems = async () => {
+  const user = await User.find({
+    select: ['id', 'nombre', 'correo', 'profesion', 'telefono', 'descripcion', 'imagen', 'categoria']
+  })
 
   return user
 }
 
 export const getOneItem = async (id:number) => {
-  const userFound = User.findOneBy({ id })
+  const userFound = await User.find({
+    where: { id },
+    relations: ['reviews'],
+    select: ['id', 'nombre', 'correo', 'profesion', 'telefono', 'descripcion', 'imagen', 'categoria', 'reviews']
+  })
 
-  if (!userFound) throw new Error('Error al encontrar usuario')
+  if (!userFound) return 'USER_NOT_FOUND'
 
   return userFound
 }
 
 export const createdItem = async (newUser:DeepPartial<User>) => {
-  // const data = User.create(newUser)
-  // console.log(data)
+  const userExist = await User.findOneBy({ correo: newUser.correo })
 
-  // // data.save()
-  // return data
+  if (userExist) return 'USER_EXIST'
+
+  const createdUser = User.create(newUser)
+
+  createdUser.save()
+
+  return createdUser
 }
 
 export const updateItem = async (id:number, user:User) => {

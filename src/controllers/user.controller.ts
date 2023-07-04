@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
-import { getItem, createdItem, getOneItem, updateItem } from '../services/user.service'
-import { Categoria } from '../types'
+import { getItems, createdItem, getOneItem, updateItem } from '../services/user.service'
+import { createUserType } from '../types'
 
-export const getUsers = async (req:Request, res:Response) => {
+export const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const response = await getItem()
+    const response = await getItems()
 
     if (!response) {
       return res.status(400).json({ message: 'no se encontraron usuarios' })
@@ -12,40 +12,51 @@ export const getUsers = async (req:Request, res:Response) => {
 
     return res.status(200).json(response)
   } catch (error) {
-    return console.log('getUser error', error.message)
+    return res.status(404).json({ message: error.message })
   }
 }
 
-export const getOneUser = async (req:Request, res:Response) => {
+export const getOneUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
     const user = await getOneItem(Number(id))
-    return res.json(user)
+
+    if (user === 'USER_NOT_FOUND') return res.status(404).json({ message: 'usuario no encontrado' })
+
+    return res.status(200).json(user)
   } catch (error) {
     return console.log('error al obtener un usuairo', error.message)
   }
 }
 
-export const createUser = async (req:Request, res:Response) => {
+export const createUser = async (req: Request, res: Response) => {
   try {
-    const { nombre, profesion, telefono, correo, password, descripcion, imagen, categoria }:{nombre:string, profesion:string, telefono:string, correo:string, password:string, descripcion:string, imagen:string, categoria:Categoria} = req.body
+    const { nombre, profesion, telefono, correo, password, descripcion, categoria }:createUserType = req.body
 
-    const newUser = await createdItem({
+    const newUser = {
+
       nombre,
       profesion,
       telefono,
       correo,
       password,
       descripcion,
-      imagen,
+      imagen: req.file.filename,
       categoria
-    })
-    return res.json(newUser)
+    }
+
+    const user = await createdItem(newUser)
+
+    if (user === 'USER_EXIST') {
+      return res.status(400).json({ message: 'El usuario ya esta registrado' })
+    }
+
+    return res.json(user)
   } catch (error) {
     return console.log('error al crear usuario', error.message)
   }
 }
-export const updateUser = async (req:Request, res:Response) => {
+export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
 
@@ -54,4 +65,4 @@ export const updateUser = async (req:Request, res:Response) => {
     console.log('error al actualizar usuarios', error.message)
   }
 }
-export const deleteUser = (req:Request, res:Response) => {}
+export const deleteUser = (req: Request, res: Response) => { }
