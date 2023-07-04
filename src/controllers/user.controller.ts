@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getItems, createdItem, getOneItem, updateItem } from '../services/user.service'
+import { getItems, createdItem, getOneItem, updateItem, deletedUser } from '../services/user.service'
 import { createUserType } from '../types'
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
@@ -65,4 +65,15 @@ export const updateUser = async (req: Request, res: Response) => {
     console.log('error al actualizar usuarios', error.message)
   }
 }
-export const deleteUser = (req: Request, res: Response) => { }
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const deleteUser = await deletedUser(Number(id))
+
+    if (deleteUser === 'USER_NOT_EXIST') return res.status(404).json({ message: 'el usuario no existe' })
+
+    return res.status(202).json(deleteUser)
+  } catch (error) {
+    return console.log('error al eliminar usuario', error.message)
+  }
+}

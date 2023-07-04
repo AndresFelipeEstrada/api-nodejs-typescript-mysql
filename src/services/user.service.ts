@@ -46,3 +46,12 @@ export const updateItem = async (id:number, user:User) => {
   const updatedUser = await User.update(id, updateUser)
   return updatedUser
 }
+
+export const deletedUser = async (id:number) => {
+  const userExist = await User.findOneBy({ id })
+
+  if (!userExist) return 'USER_NOT_EXIST'
+
+  const deleteUser = await User.delete(id)
+  return deleteUser
+}
