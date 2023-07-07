@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from 'typeorm'
 import { Reviews } from './Reviews'
-import { Categoria } from '../types'
+import { Categoria } from '../dto/types'
 
 @Entity()
 export class User extends BaseEntity {

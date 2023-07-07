@@ -1,5 +1,7 @@
 import { DeepPartial } from 'typeorm'
+import { createUserType, AuthUser } from '../dto/user.dto'
 import { User } from '../entity/User'
+import { comparePassword, encrypt } from '../helpers/password.handle'
 
 export const getItems = async () => {
   const user = await User.find({
@@ -21,29 +23,42 @@ export const getOneItem = async (id:number) => {
   return userFound
 }
 
-export const createdItem = async (newUser:DeepPartial<User>) => {
-  const userExist = await User.findOneBy({ correo: newUser.correo })
+export const createdItem = async ({
+  nombre,
+  profesion,
+  telefono,
+  correo,
+  password,
+  descripcion,
+  imagen,
+  categoria
+}:createUserType) => {
+  const userExist = await User.findOneBy({ correo })
 
   if (userExist) return 'USER_EXIST'
 
-  const createdUser = User.create(newUser)
+  const passwordEncrypted = await encrypt(password)
+  console.log(passwordEncrypted)
 
+  const saveUser:DeepPartial<User> = {
+    nombre,
+    profesion,
+    telefono,
+    correo,
+    password: passwordEncrypted,
+    descripcion,
+    imagen,
+    categoria
+  }
+
+  const createdUser = User.create(saveUser)
   createdUser.save()
 
   return createdUser
 }
 
-export const updateItem = async (id:number, user:User) => {
-  const getUser = await User.findOneBy({ id })
-
-  if (!getUser) throw new Error('Error al encontrar usuario')
-
-  const updateUser = {
-    ...getUser,
-    user
-  }
-
-  const updatedUser = await User.update(id, updateUser)
+export const updateItem = async (id:number, data:User) => {
+  const updatedUser = await User.update(id, data)
   return updatedUser
 }
 
@@ -54,4 +69,18 @@ export const deletedUser = async (id:number) => {
 
   const deleteUser = await User.delete(id)
   return deleteUser
+}
+
+export const login = async ({ correo, password }:AuthUser) => {
+  const userExist = await User.findOneBy({ correo })
+
+  if (!userExist) return 'USER_NOT_FOUND'
+
+  const passwordHash = userExist.password
+
+  const isEquals = comparePassword(password, passwordHash)
+
+  if (!isEquals) return 'PASSWORD_INCORRECT'
+
+  return userExist
 }

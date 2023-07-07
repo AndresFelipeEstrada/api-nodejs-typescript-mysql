@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { getItems, createdItem, getOneItem, updateItem, deletedUser } from '../services/user.service'
-import { createUserType } from '../types'
+import { getItems, createdItem, getOneItem, updateItem, deletedUser, login } from '../services/user.service'
+import { createUserType } from '../dto/user.dto'
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -34,7 +34,6 @@ export const createUser = async (req: Request, res: Response) => {
     const { nombre, profesion, telefono, correo, password, descripcion, categoria }:createUserType = req.body
 
     const newUser = {
-
       nombre,
       profesion,
       telefono,
@@ -53,16 +52,19 @@ export const createUser = async (req: Request, res: Response) => {
 
     return res.json(user)
   } catch (error) {
-    return console.log('error al crear usuario', error.message)
+    return console.log('error al crear usuario', error)
   }
 }
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
+    const newData = req.body
 
-    await updateItem(Number(id), req.body)
+    const userUpdated = await updateItem(Number(id), newData)
+
+    return res.status(200).json(userUpdated)
   } catch (error) {
-    console.log('error al actualizar usuarios', error.message)
+    return res.status(400).json({ message: error.message })
   }
 }
 export const deleteUser = async (req: Request, res: Response) => {
@@ -75,5 +77,20 @@ export const deleteUser = async (req: Request, res: Response) => {
     return res.status(202).json(deleteUser)
   } catch (error) {
     return console.log('error al eliminar usuario', error.message)
+  }
+}
+
+export const loginUser = async ({ body }:Request, res:Response) => {
+  try {
+    const { correo, password } = body
+    const user = await login({ correo, password })
+
+    if (user === 'PASSWORD_INCORRECT' || user === 'USER_NOT_FOUND') {
+      return res.status(403).json(user)
+    }
+
+    return res.status(200).json(user)
+  } catch (error) {
+    return console.log('error al iniciar sesion', error)
   }
 }

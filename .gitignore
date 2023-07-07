@@ -7,3 +7,5 @@ tmp/
 temp/
 src/data-source.ts
 .env
+uploads/**
+!.gitkeep

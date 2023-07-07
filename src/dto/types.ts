@@ -1,0 +1,14 @@
+/* eslint-disable no-unused-vars */
+export enum Categoria {
+    PINTOR = 'PINTOR',
+    ALBAÑIL = 'ALBAÑIL',
+    FONTANERO = 'FONTANERO',
+    CARPINTERO = 'CARPINTERO',
+    ELECTRICISTA = 'ELECTRICISTA',
+    CERRAJERO = 'CERRAJERO',
+    ELECTRONICO = 'ELECTRONICO',
+    JARDINERO = 'JARDINERO',
+    TECNICO = 'TECNICO',
+    MASAJISTA = 'MASAJISTA',
+    MANICURISTA = 'MANICURISTA'
+  }
