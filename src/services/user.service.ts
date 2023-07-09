@@ -2,6 +2,7 @@ import { DeepPartial } from 'typeorm'
 import { createUserType, AuthUser } from '../dto/user.dto'
 import { User } from '../entity/User'
 import { comparePassword, encrypt } from '../helpers/password.handle'
+import { signToken } from '../helpers/jwt'
 
 export const getItems = async () => {
   const user = await User.find({
@@ -82,5 +83,12 @@ export const login = async ({ correo, password }:AuthUser) => {
 
   if (!isEquals) return 'PASSWORD_INCORRECT'
 
-  return userExist
+  const token = await signToken(correo)
+
+  const logginUser = {
+    token,
+    userExist
+  }
+
+  return logginUser
 }

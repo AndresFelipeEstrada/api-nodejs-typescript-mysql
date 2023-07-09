@@ -25,7 +25,7 @@ export const getOneUser = async (req: Request, res: Response) => {
 
     return res.status(200).json(user)
   } catch (error) {
-    return console.log('error al obtener un usuairo', error.message)
+    return console.log('error al obtener un usuario', error.message)
   }
 }
 
@@ -55,6 +55,7 @@ export const createUser = async (req: Request, res: Response) => {
     return console.log('error al crear usuario', error)
   }
 }
+
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
@@ -67,6 +68,7 @@ export const updateUser = async (req: Request, res: Response) => {
     return res.status(400).json({ message: error.message })
   }
 }
+
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params

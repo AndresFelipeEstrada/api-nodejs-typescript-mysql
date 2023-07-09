@@ -3,6 +3,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import userRouter from './routes/user.routes'
 import path from 'path'
+import reviewRouter from './routes/review.routes'
 
 const app = express()
 
@@ -18,6 +19,7 @@ app.use(express.static(path.join('uploads')))
 // Routes
 
 app.use('/api/users', userRouter)
+app.use('/api/reviews', reviewRouter)
 
 // app.post('/', upload.single('imagen'), (req, res) => {
 //   const file = req.file
