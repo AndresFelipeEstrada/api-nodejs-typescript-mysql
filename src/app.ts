@@ -12,7 +12,7 @@ app.use(express.json({ limit: '100mb' }))
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.urlencoded({ limit: '100mb', extended: true }))
-app.use(express.static(path.join('uploads')))
+app.use('/static', express.static(path.join('uploads')))
 
 // Middlewares
 
