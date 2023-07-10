@@ -12,12 +12,15 @@ export class User extends BaseEntity {
     nombre: string
 
   @Column({ length: 50 })
+
     profesion: string
 
   @Column({ length: 15 })
+
     telefono: string
 
   @Column({ unique: true })
+
     correo: string
 
   @Column()
@@ -29,18 +32,18 @@ export class User extends BaseEntity {
   @Column({ length: 9999 })
     imagen: string
 
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
-    creado: Date
-
-  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
-    editado: Date
-
   @Column({
     type: 'enum',
     enum: Categoria,
     default: Categoria.TECNICO
   })
     categoria: Categoria
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+    creado: Date
+
+  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
+    editado: Date
 
   @OneToMany(() => Reviews, (review) => review.user, { onDelete: 'CASCADE', cascade: true })
   @JoinColumn()

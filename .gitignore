@@ -1,9 +1,8 @@
-
 .idea/
 .vscode/
-.env
 node_modules/
 build/
+.env
 tmp/
 temp/
 src/data-source.ts
