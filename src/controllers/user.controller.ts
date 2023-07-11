@@ -1,9 +1,6 @@
 import { Request, Response } from 'express'
 import { getItems, createdItem, getOneItem, updateItem, deletedUser, login } from '../services/user.service'
 import { createUserType } from '../dto/user.dto'
-import { loginSchema } from '../schemas/login.schema'
-
-import { ZodError } from 'zod'
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -87,9 +84,6 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const loginUser = async (req:Request, res:Response) => {
   try {
-    const result = loginSchema.parse(req.body)
-    console.log(result)
-
     const { correo, password } = req.body
     const user = await login({ correo, password })
 
@@ -99,9 +93,6 @@ export const loginUser = async (req:Request, res:Response) => {
 
     return res.status(200).json(user)
   } catch (error) {
-    if (error instanceof ZodError) {
-      return res.status(400).json(error.issues.map(issue => issue.message))
-    }
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
