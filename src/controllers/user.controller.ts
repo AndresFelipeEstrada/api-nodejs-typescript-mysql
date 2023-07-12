@@ -82,9 +82,9 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 }
 
-export const loginUser = async ({ body }:Request, res:Response) => {
+export const loginUser = async (req:Request, res:Response) => {
   try {
-    const { correo, password } = body
+    const { correo, password } = req.body
     const user = await login({ correo, password })
 
     if (user === 'PASSWORD_INCORRECT' || user === 'USER_NOT_FOUND') {
@@ -93,6 +93,6 @@ export const loginUser = async ({ body }:Request, res:Response) => {
 
     return res.status(200).json(user)
   } catch (error) {
-    return console.log('error al iniciar sesion', error)
+    return res.status(500).json({ message: 'Internal server error' })
   }
 }
