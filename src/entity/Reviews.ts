@@ -16,7 +16,7 @@ export class Reviews extends BaseEntity {
       mensaje: string
 
     @ManyToOne(
-      () => User, (user) => user.reviews
+      () => User, (user) => user.reviews, { onDelete: 'CASCADE', cascade: true }
     )
       user: User
 }

@@ -3,6 +3,8 @@ import { createUserType, AuthUser } from '../dto/user.dto'
 import { User } from '../entity/User'
 import { comparePassword, encrypt } from '../helpers/password.handle'
 import { signToken } from '../helpers/jwt'
+import path from 'path'
+import fs from 'fs'
 
 export const getItems = async () => {
   const user = await User.find({
@@ -67,6 +69,14 @@ export const deletedUser = async (id:number) => {
   const userExist = await User.findOneBy({ id })
 
   if (!userExist) return 'USER_NOT_EXIST'
+
+  const relativeRute = __dirname.split('\\src')[0]
+
+  const imagePath = path.join(relativeRute, 'uploads', userExist.imagen)
+
+  if (fs.existsSync(imagePath)) {
+    fs.unlinkSync(imagePath)
+  }
 
   const deleteUser = await User.delete(id)
   return deleteUser

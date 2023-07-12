@@ -45,7 +45,7 @@ export class User extends BaseEntity {
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
     editado: Date
 
-  @OneToMany(() => Reviews, (review) => review.user, { onDelete: 'CASCADE', cascade: true })
+  @OneToMany(() => Reviews, (review) => review.user)
   @JoinColumn()
     reviews: Reviews[]
 }
