@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { Categoria } from '../dto/types'
 
-const updateUserSchema = z.object({
+export const updateUserSchema = z.object({
   body: z.object({
     nombre: z.string().nonempty().optional(),
     profesion: z.string().nonempty().optional(),
@@ -15,5 +15,3 @@ const updateUserSchema = z.object({
     id: z.string().nonempty()
   })
 })
-
-export default updateUserSchema

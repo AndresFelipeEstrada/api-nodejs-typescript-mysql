@@ -41,7 +41,6 @@ export const createdItem = async ({
   if (userExist) return 'USER_EXIST'
 
   const passwordEncrypted = await encrypt(password)
-  console.log(passwordEncrypted)
 
   const saveUser:DeepPartial<User> = {
     nombre,
