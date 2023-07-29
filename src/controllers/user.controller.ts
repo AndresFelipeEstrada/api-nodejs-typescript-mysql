@@ -1,6 +1,8 @@
+import fs from 'fs'
 import { Request, Response } from 'express'
 import { getItems, createdItem, getOneItem, updateItem, deletedUser, login } from '../services/user.service'
 import { createUserType } from '../dto/user.dto'
+import sharp from 'sharp'
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -33,6 +35,18 @@ export const createUser = async (req: Request, res: Response) => {
   try {
     const { nombre, profesion, telefono, correo, password, descripcion, categoria }:createUserType = req.body
 
+    // console.log(req.file)
+
+    // await compressImage(req.file)
+
+    const newBuffer = await sharp(req.file.buffer).webp().toBuffer()
+
+    const originalName = req.file.originalname.split('.').shift()
+
+    const imageName = Date.now() + originalName + '.webp'
+
+    await fs.writeFileSync(`./uploads/${imageName}`, newBuffer)
+
     const newUser = {
       nombre,
       profesion,
@@ -40,17 +54,17 @@ export const createUser = async (req: Request, res: Response) => {
       correo,
       password,
       descripcion,
-      imagen: req.file.filename,
+      imagen: imageName,
       categoria
     }
 
-    const user = await createdItem(newUser)
+    // const user = await createdItem(newUser)
 
-    if (user === 'USER_EXIST') {
-      return res.status(400).json({ message: 'El usuario ya esta registrado' })
-    }
+    // if (user === 'USER_EXIST') {
+    //   return res.status(400).json({ message: 'El usuario ya esta registrado' })
+    // }
 
-    return res.json(user)
+    return res.json(newUser)
   } catch (error) {
     return console.log('error al crear usuario', error)
   }
