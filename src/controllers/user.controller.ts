@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { getItems, createdItem, getOneItem, updateItem, deletedUser, login } from '../services/user.service'
 import { createUserType } from '../dto/user.dto'
 
-export const getUsers = async (req: Request, res: Response): Promise<Response> => {
+export const getUsers = async (_: Request, res: Response): Promise<Response> => {
   try {
     const response = await getItems()
 
@@ -31,7 +31,7 @@ export const getOneUser = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { nombre, profesion, telefono, correo, password, descripcion, categoria }:createUserType = req.body
+    const { nombre, profesion, telefono, correo, password, descripcion, categoria }: createUserType = req.body
 
     const newUser = {
       nombre,
@@ -82,7 +82,7 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 }
 
-export const loginUser = async (req:Request, res:Response) => {
+export const loginUser = async (req: Request, res: Response) => {
   try {
     const { correo, password } = req.body
     const user = await login({ correo, password })

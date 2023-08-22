@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import { createReview } from '../services/review.service'
 
-export const getReviews = () => {}
+export const getReviews = () => { }
 
-export const getOneReview = () => {}
+export const getOneReview = () => { }
 
-export const postReview = async (req:Request, res:Response) => {
+export const postReview = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params
 
@@ -17,5 +17,5 @@ export const postReview = async (req:Request, res:Response) => {
   }
 }
 
-export const putReview = () => {}
-export const deleteReview = () => {}
+export const putReview = () => { }
+export const deleteReview = () => { }

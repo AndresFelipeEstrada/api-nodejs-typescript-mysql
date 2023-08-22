@@ -11,10 +11,10 @@ export const getItems = async () => {
     select: ['id', 'nombre', 'correo', 'profesion', 'telefono', 'descripcion', 'imagen', 'categoria']
   })
 
-  return user
+  sadasdu
 }
 
-export const getOneItem = async (id:number) => {
+export const getOneItem = async (id: number) => {
   const userFound = await User.find({
     where: { id },
     relations: ['reviews'],
@@ -35,14 +35,14 @@ export const createdItem = async ({
   descripcion,
   imagen,
   categoria
-}:createUserType) => {
+}: createUserType) => {
   const userExist = await User.findOneBy({ correo })
 
   if (userExist) return 'USER_EXIST'
 
   const passwordEncrypted = await encrypt(password)
 
-  const saveUser:DeepPartial<User> = {
+  const saveUser: DeepPartial<User> = {
     nombre,
     profesion,
     telefono,
@@ -59,12 +59,12 @@ export const createdItem = async ({
   return createdUser
 }
 
-export const updateItem = async (id:number, data:User) => {
+export const updateItem = async (id: number, data: User) => {
   const updatedUser = await User.update(id, data)
   return updatedUser
 }
 
-export const deletedUser = async (id:number) => {
+export const deletedUser = async (id: number) => {
   const userExist = await User.findOneBy({ id })
 
   if (!userExist) return 'USER_NOT_EXIST'
@@ -81,7 +81,7 @@ export const deletedUser = async (id:number) => {
   return deleteUser
 }
 
-export const login = async ({ correo, password }:AuthUser) => {
+export const login = async ({ correo, password }: AuthUser) => {
   const userExist = await User.findOneBy({ correo })
 
   if (!userExist) return 'USER_NOT_FOUND'
